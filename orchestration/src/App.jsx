@@ -57,7 +57,7 @@ export default function App() {
   const [files] = useState(initialFiles);
 
   // Mock handlers
-  const handleExecute = (key) => {
+  const handleExecute = async (key) => {
     const service = services.find(s => s.key === key);
     setLogs((l) => [...l, `[${new Date().toLocaleTimeString()}] Ejecutando: ${service.command}`]);
     setServices((prev) =>
@@ -65,14 +65,43 @@ export default function App() {
         s.key === key ? { ...s, status: "running" } : s
       )
     );
-    setTimeout(() => {
-      setServices((prev) =>
-        prev.map((s) =>
-          s.key === key ? { ...s, status: "success" } : s
-        )
-      );
-      setLogs((l) => [...l, `[${new Date().toLocaleTimeString()}] Servicio ${key} finalizado con éxito.`]);
-    }, 1500);
+    if (key === "extraction") {
+      try {
+        const res = await fetch("http://localhost:4000/api/extract", { method: "POST" });
+        const data = await res.json();
+        if (data.success) {
+          setLogs((l) => [...l, ...data.log.split("\n").map(line => `[extractor] ${line}`)]);
+          setServices((prev) =>
+            prev.map((s) =>
+              s.key === key ? { ...s, status: "success" } : s
+            )
+          );
+        } else {
+          setLogs((l) => [...l, `[extractor][error] ${data.error || "Error desconocido"}`]);
+          setServices((prev) =>
+            prev.map((s) =>
+              s.key === key ? { ...s, status: "error" } : s
+            )
+          );
+        }
+      } catch (err) {
+        setLogs((l) => [...l, `[extractor][error] ${err.message}`]);
+        setServices((prev) =>
+          prev.map((s) =>
+            s.key === key ? { ...s, status: "error" } : s
+          )
+        );
+      }
+    } else {
+      setTimeout(() => {
+        setServices((prev) =>
+          prev.map((s) =>
+            s.key === key ? { ...s, status: "success" } : s
+          )
+        );
+        setLogs((l) => [...l, `[${new Date().toLocaleTimeString()}] Servicio ${key} finalizado con éxito.`]);
+      }, 1500);
+    }
   };
 
   const handlePipeline = () => {
