@@ -1,28 +1,51 @@
 {
-  "name": "etl-pipeline-vinotinto-sentiment",
+  "name": "orchestration-service",
+  "description": "Módulo de orquestación para el pipeline ETL de análisis de sentimientos de Vinotinto",
+  "private": true,
   "version": "1.0.0",
-  "description": "Pipeline ETL para análisis de sentimientos de la Vinotinto",
   "type": "module",
-  "scripts": {
-    "dev": "cd orchestration && npm run dev",
-    "build": "cd orchestration && npm run build",
-    "extract": "cd extraction && node src/core/main.js",
-    "integrate": "node scripts/integrate-extraction.js",
-    "validate-env": "node scripts/validate-env.js",
-    "submodule:init": "git submodule update --init --recursive",
-    "submodule:update": "git submodule update --remote",
-    "install:all": "npm install && cd orchestration && npm install && cd ../extraction && npm install",
-    "start:backend": "cd orchestration && npm run start:backend"
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "<url-del-repositorio-orchestration>"
   },
   "keywords": [
     "etl",
-    "sentiment-analysis",
+    "orchestration",
+    "react",
+    "express",
+    "supabase",
     "vinotinto",
-    "twitter",
-    "data-pipeline"
+    "sentiment-analysis"
   ],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {},
-  "dependencies": {}
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "start:backend": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.2",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "postcss": "^8.5.6",
+    "vite": "^7.0.0"
+  }
 } 

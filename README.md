@@ -1,212 +1,102 @@
-# ETL Pipeline - Análisis de Sentimientos Vinotinto
+# Orchestration Service - ETL Pipeline Vinotinto Sentiment
 
-Pipeline ETL completo para extraer, transformar y cargar datos de sentimientos sobre la Vinotinto desde Twitter.
+Este es el módulo de orquestación para el pipeline ETL de análisis de sentimientos de Vinotinto. Proporciona una interfaz web para monitorear y controlar el proceso de extracción, transformación y carga de datos.
 
-## 📚 Documentación Completa
+## Características
 
-**📖 [Ver Documentación Completa](./docs/README.md)**
+- **Dashboard Web**: Interfaz React para monitoreo en tiempo real
+- **API REST**: Servidor Express para comunicación con otros módulos
+- **Métricas en Tiempo Real**: Visualización de logs y métricas del pipeline
+- **Configuración de Supabase**: Gestión de conexiones a la base de datos
 
-La documentación incluye:
-- [Guía de Configuración Inicial](./docs/setup/README.md)
-- [Configuración de Variables de Entorno](./docs/setup/environment.md)
-- [Documentación del Módulo de Extracción](./extraction/README.md)
-- [Guía de Troubleshooting](./docs/operations/TROUBLESHOOTING.md)
+## Tecnologías
 
-## 🏗️ Arquitectura
+- **Frontend**: React + Vite
+- **Backend**: Node.js + Express
+- **Estilos**: Tailwind CSS
+- **Base de Datos**: Supabase (PostgreSQL)
+- **Linting**: ESLint
 
-El proyecto está estructurado en módulos independientes:
+## Instalación
 
-- **extraction/**: Módulo de extracción de tweets (submodule desde [Proyecto_BD2](https://github.com/ajperez20/Proyecto_BD2))
-- **orchestration/**: Frontend y backend para monitoreo y control
-- **load/**: Módulo de carga de datos (en desarrollo)
-
-## 🚀 Configuración Inicial
-
-### 1. Clonar el repositorio con submodules
-
+1. Clona este repositorio:
 ```bash
-git clone --recursive <URL_DEL_REPOSITORIO>
-cd ETL_pipeline_vinotinto-sentiment
+git clone <url-del-repositorio>
+cd orchestration-service
 ```
 
-### 2. Si ya clonaste sin submodules, inicialízalos:
-
+2. Instala las dependencias:
 ```bash
-git submodule update --init --recursive
+npm install
 ```
 
-### 3. Instalar dependencias de todos los módulos:
-
+3. Configura las variables de entorno:
 ```bash
-npm run install:all
+cp env.example .env
 ```
 
-### 4. Configurar Variables de Entorno
+4. Completa los valores en el archivo `.env`:
+   - `SUPABASE_URL`: URL de tu proyecto Supabase
+   - `SUPABASE_API_KEY`: Clave API de Supabase
+   - `SUPABASE_TABLE`: Nombre de la tabla para almacenar datos
 
-**📋 [Ver Guía Completa de Variables de Entorno](./docs/setup/environment.md)**
-
-#### Módulo de Extracción (`extraction/.env`)
-
-```bash
-# Copiar archivo de ejemplo
-cp extraction/env.example extraction/.env
-
-# Editar con tus credenciales
-TWITTER_BEARER_TOKEN=tu_twitter_bearer_token
-SUPABASE_URL=https://tu-proyecto.supabase.co
-SUPABASE_ANON_KEY=tu_supabase_anon_key
-```
-
-#### Módulo de Orquestación (`orchestration/.env`)
-
-```bash
-# Copiar archivo de ejemplo
-cp orchestration/env.example orchestration/.env
-
-# Editar con tus credenciales
-PORT=4000
-SUPABASE_URL=https://tu-proyecto.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=tu_service_role_key
-```
-
-## 📦 Scripts Disponibles
+## Uso
 
 ### Desarrollo
 ```bash
-npm run dev          # Inicia el servidor de desarrollo (orchestration)
-npm run build        # Construye la aplicación
+# Iniciar el servidor de desarrollo (frontend)
+npm run dev
+
+# Iniciar el servidor backend
+npm run start:backend
 ```
 
-### Extracción de Datos
+### Producción
 ```bash
-npm run extract      # Ejecuta el módulo de extracción
-npm run integrate    # Integra datos del módulo de extracción
+# Construir la aplicación
+npm run build
+
+# Iniciar en modo preview
+npm run preview
 ```
 
-### Gestión de Submodules
-```bash
-npm run submodule:init    # Inicializa submodules
-npm run submodule:update  # Actualiza submodules desde remoto
-```
+## Scripts Disponibles
 
-### Backend
-```bash
-npm run start:backend     # Inicia el servidor backend
-```
+- `npm run dev`: Inicia el servidor de desarrollo Vite
+- `npm run build`: Construye la aplicación para producción
+- `npm run lint`: Ejecuta ESLint para verificar el código
+- `npm run preview`: Inicia el servidor de preview
+- `npm run start:backend`: Inicia el servidor backend Express
 
-## 🔧 Uso del Módulo de Extracción
-
-El módulo de extracción está configurado como un **git submodule** desde el repositorio [Proyecto_BD2](https://github.com/ajperez20/Proyecto_BD2).
-
-**📖 [Ver Documentación Completa del Módulo de Extracción](./extraction/README.md)**
-
-### Actualizar el módulo de extracción:
-
-```bash
-# Actualizar a la última versión
-npm run submodule:update
-
-# O manualmente
-git submodule update --remote extraction
-git add extraction
-git commit -m "feat: actualizar módulo de extracción"
-```
-
-### Trabajar con el módulo de extracción:
-
-```bash
-cd extraction
-# Hacer cambios en el módulo
-git add .
-git commit -m "feat: mejoras en extracción"
-git push origin master
-
-# Volver al proyecto principal
-cd ..
-git add extraction
-git commit -m "feat: actualizar submodule extraction"
-```
-
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
-ETL_pipeline_vinotinto-sentiment/
-├── extraction/           # Submodule - Extracción de tweets
-│   ├── src/
-│   │   ├── core/        # Lógica principal de extracción
-│   │   ├── data/        # Datos extraídos
-│   │   └── database/    # Scripts de base de datos
-│   ├── env.example      # Ejemplo de variables de entorno
-│   ├── README.md        # Documentación del módulo
-│   └── package.json
-├── orchestration/        # Frontend y backend
-│   ├── src/
-│   │   ├── components/  # Componentes React
-│   │   └── ...
-│   ├── env.example      # Ejemplo de variables de entorno
-│   └── package.json
-├── load/                # Módulo de carga (en desarrollo)
-├── docs/                # Documentación completa
-│   ├── setup/           # Guías de configuración
-│   ├── operations/      # Guías operacionales
-│   └── README.md        # Índice de documentación
-├── scripts/             # Scripts de integración
-├── package.json         # Package.json principal
-└── README.md
+orchestration-service/
+├── src/
+│   ├── components/     # Componentes React
+│   ├── App.jsx        # Componente principal
+│   └── main.jsx       # Punto de entrada
+├── public/            # Archivos estáticos
+├── server.js          # Servidor Express
+├── package.json       # Dependencias y scripts
+└── README.md          # Este archivo
 ```
 
-## 🔗 Integración de Datos
+## Integración con el Pipeline ETL
 
-Para integrar los datos extraídos con el pipeline principal:
+Este módulo se integra con:
+- **Extraction Module**: Para monitorear la extracción de tweets
+- **Load Module**: Para visualizar el estado de carga de datos
+- **Supabase**: Para almacenar y consultar métricas
 
-1. **Ejecutar extracción**:
-   ```bash
-   npm run extract
-   ```
+## Contribución
 
-2. **Integrar datos**:
-   ```bash
-   npm run integrate
-   ```
+1. Fork el repositorio
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -am 'Agregar nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Crea un Pull Request
 
-3. **Verificar en la interfaz**:
-   ```bash
-   npm run dev
-   ```
+## Licencia
 
-## 🛠️ Tecnologías
-
-- **Frontend**: React + Vite + Tailwind CSS
-- **Backend**: Node.js + Express
-- **Base de Datos**: Supabase
-- **Extracción**: Twitter API v2
-- **Análisis**: Natural Language Processing
-
-## 🐛 Solución de Problemas
-
-**🔧 [Ver Guía Completa de Troubleshooting](./docs/operations/TROUBLESHOOTING.md)**
-
-### Problemas Comunes
-
-1. **Error de autenticación**: Verificar variables de entorno
-2. **Módulos no encontrados**: Ejecutar `npm run install:all`
-3. **Puerto ocupado**: Cambiar puerto en `orchestration/.env`
-4. **No se extraen tweets**: Verificar cuentas y filtros
-
-## 📝 Notas
-
-- El módulo de extracción mantiene su propio repositorio y puede ser actualizado independientemente
-- Los cambios en el submodule deben ser commitados tanto en el submodule como en el proyecto principal
-- Usa `npm run submodule:update` para mantener el módulo de extracción actualizado
-
-## 🤝 Contribución
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia ISC.
+Este proyecto está bajo la misma licencia que el proyecto principal ETL Pipeline Vinotinto Sentiment.
