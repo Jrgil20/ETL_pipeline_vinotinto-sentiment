@@ -1,0 +1,27 @@
+{
+  "name": "etl-pipeline-vinotinto-sentiment",
+  "version": "1.0.0",
+  "description": "Pipeline ETL para análisis de sentimientos de la Vinotinto",
+  "type": "module",
+  "scripts": {
+    "dev": "cd orchestration && npm run dev",
+    "build": "cd orchestration && npm run build",
+    "extract": "cd extraction && node src/core/main.js",
+    "integrate": "node scripts/integrate-extraction.js",
+    "submodule:init": "git submodule update --init --recursive",
+    "submodule:update": "git submodule update --remote",
+    "install:all": "npm install && cd orchestration && npm install && cd ../extraction && npm install",
+    "start:backend": "cd orchestration && npm run start:backend"
+  },
+  "keywords": [
+    "etl",
+    "sentiment-analysis",
+    "vinotinto",
+    "twitter",
+    "data-pipeline"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+} 
