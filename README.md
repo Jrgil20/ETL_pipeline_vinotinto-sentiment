@@ -2,6 +2,16 @@
 
 Pipeline ETL completo para extraer, transformar y cargar datos de sentimientos sobre la Vinotinto desde Twitter.
 
+## 📚 Documentación Completa
+
+**📖 [Ver Documentación Completa](./docs/README.md)**
+
+La documentación incluye:
+- [Guía de Configuración Inicial](./docs/setup/README.md)
+- [Configuración de Variables de Entorno](./docs/setup/environment.md)
+- [Documentación del Módulo de Extracción](./extraction/README.md)
+- [Guía de Troubleshooting](./docs/operations/TROUBLESHOOTING.md)
+
 ## 🏗️ Arquitectura
 
 El proyecto está estructurado en módulos independientes:
@@ -29,6 +39,34 @@ git submodule update --init --recursive
 
 ```bash
 npm run install:all
+```
+
+### 4. Configurar Variables de Entorno
+
+**📋 [Ver Guía Completa de Variables de Entorno](./docs/setup/environment.md)**
+
+#### Módulo de Extracción (`extraction/.env`)
+
+```bash
+# Copiar archivo de ejemplo
+cp extraction/env.example extraction/.env
+
+# Editar con tus credenciales
+TWITTER_BEARER_TOKEN=tu_twitter_bearer_token
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_ANON_KEY=tu_supabase_anon_key
+```
+
+#### Módulo de Orquestación (`orchestration/.env`)
+
+```bash
+# Copiar archivo de ejemplo
+cp orchestration/env.example orchestration/.env
+
+# Editar con tus credenciales
+PORT=4000
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=tu_service_role_key
 ```
 
 ## 📦 Scripts Disponibles
@@ -59,6 +97,8 @@ npm run start:backend     # Inicia el servidor backend
 ## 🔧 Uso del Módulo de Extracción
 
 El módulo de extracción está configurado como un **git submodule** desde el repositorio [Proyecto_BD2](https://github.com/ajperez20/Proyecto_BD2).
+
+**📖 [Ver Documentación Completa del Módulo de Extracción](./extraction/README.md)**
 
 ### Actualizar el módulo de extracción:
 
@@ -96,13 +136,20 @@ ETL_pipeline_vinotinto-sentiment/
 │   │   ├── core/        # Lógica principal de extracción
 │   │   ├── data/        # Datos extraídos
 │   │   └── database/    # Scripts de base de datos
+│   ├── env.example      # Ejemplo de variables de entorno
+│   ├── README.md        # Documentación del módulo
 │   └── package.json
 ├── orchestration/        # Frontend y backend
 │   ├── src/
 │   │   ├── components/  # Componentes React
 │   │   └── ...
+│   ├── env.example      # Ejemplo de variables de entorno
 │   └── package.json
 ├── load/                # Módulo de carga (en desarrollo)
+├── docs/                # Documentación completa
+│   ├── setup/           # Guías de configuración
+│   ├── operations/      # Guías operacionales
+│   └── README.md        # Índice de documentación
 ├── scripts/             # Scripts de integración
 ├── package.json         # Package.json principal
 └── README.md
@@ -134,6 +181,17 @@ Para integrar los datos extraídos con el pipeline principal:
 - **Base de Datos**: Supabase
 - **Extracción**: Twitter API v2
 - **Análisis**: Natural Language Processing
+
+## 🐛 Solución de Problemas
+
+**🔧 [Ver Guía Completa de Troubleshooting](./docs/operations/TROUBLESHOOTING.md)**
+
+### Problemas Comunes
+
+1. **Error de autenticación**: Verificar variables de entorno
+2. **Módulos no encontrados**: Ejecutar `npm run install:all`
+3. **Puerto ocupado**: Cambiar puerto en `orchestration/.env`
+4. **No se extraen tweets**: Verificar cuentas y filtros
 
 ## 📝 Notas
 

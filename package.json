@@ -8,6 +8,7 @@
     "build": "cd orchestration && npm run build",
     "extract": "cd extraction && node src/core/main.js",
     "integrate": "node scripts/integrate-extraction.js",
+    "validate-env": "node scripts/validate-env.js",
     "submodule:init": "git submodule update --init --recursive",
     "submodule:update": "git submodule update --remote",
     "install:all": "npm install && cd orchestration && npm install && cd ../extraction && npm install",
