@@ -1,6 +1,9 @@
 [submodule "extraction"]
 	path = extraction
 	url = https://github.com/ajperez20/Proyecto_BD2.git
+[submodule "transformation"]
+	path = transformation
+	url = https://github.com/Jrgil20/AgenteAnalizadorSentimientos
 [submodule "orchestration"]
 	path = orchestration
 	url = https://github.com/Jrgil20/Orquestador_ETL.git
