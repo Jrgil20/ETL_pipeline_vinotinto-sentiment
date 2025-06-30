@@ -1,95 +1,246 @@
-# Orchestration Service - ETL Pipeline Vinotinto Sentiment
+# ETL Pipeline - Análisis de Sentimientos Vinotinto
 
-Este es el módulo de orquestación para el pipeline ETL de análisis de sentimientos de Vinotinto. Proporciona una interfaz web para monitorear y controlar el proceso de extracción, transformación y carga de datos.
+Un pipeline ETL completo para extraer, transformar y cargar datos de análisis de sentimientos sobre la Vinotinto (Selección de Venezuela) desde Twitter, utilizando Azure AI para el análisis de sentimientos y Supabase como base de datos.
 
-## Características
+## 🏗️ Arquitectura del Pipeline ETL
 
-- **Dashboard Web**: Interfaz React para monitoreo en tiempo real
-- **API REST**: Servidor Express para comunicación con otros módulos
-- **Métricas en Tiempo Real**: Visualización de logs y métricas del pipeline
-- **Configuración de Supabase**: Gestión de conexiones a la base de datos
+Este proyecto implementa una arquitectura ETL (Extract, Transform, Load) distribuida en módulos especializados:
 
-## Tecnologías
+```
+ETL_pipeline_vinotinto-sentiment/
+├── extraction/          # 🚀 MÓDULO DE EXTRACCIÓN
+│   ├── src/core/       # Extracción de tweets desde Twitter API v2
+│   └── output/         # Datos extraídos (CSV)
+├── transformation/      # 🔄 MÓDULO DE TRANSFORMACIÓN
+│   └── src/           # Análisis de sentimientos con Azure AI
+├── orchestration/      # 🎛️ MÓDULO DE ORQUESTACIÓN
+│   ├── src/           # Dashboard React + API Express
+│   └── server.js      # Servidor backend
+└── scripts/           # 🔧 SCRIPTS DE INTEGRACIÓN
+    ├── integrate-extraction.js
+    └── validate-env.js
+```
 
-- **Frontend**: React + Vite
-- **Backend**: Node.js + Express
-- **Estilos**: Tailwind CSS
-- **Base de Datos**: Supabase (PostgreSQL)
-- **Linting**: ESLint
+## 📋 Descripción de Módulos
 
-## Instalación
+### 🚀 **Extraction** - Extracción de Datos
+- **Fuente**: Twitter API v2
+- **Funcionalidad**: Extrae tweets relacionados con la Vinotinto
+- **Filtros**: Palabras clave, fechas específicas, métricas de engagement
+- **Salida**: CSV con tweets filtrados
+- **Tecnologías**: Node.js, Twitter API, Supabase
 
-1. Clona este repositorio:
+### 🔄 **Transformation** - Análisis de Sentimientos
+- **Procesamiento**: Análisis de sentimientos usando Azure AI Foundry
+- **Entrada**: Tweets extraídos (CSV)
+- **Salida**: Resultados de análisis (JSON)
+- **Tecnologías**: Python, Azure AI, OpenAI
+
+### 🎛️ **Orchestration** - Monitoreo y Control
+- **Dashboard**: Interfaz web React para monitoreo en tiempo real
+- **API**: Servidor Express para comunicación entre módulos
+- **Métricas**: Visualización de logs y estado del pipeline
+- **Tecnologías**: React, Express, Tailwind CSS
+
+### 🔧 **Scripts** - Integración y Validación
+- **Validación**: Verificación de variables de entorno
+- **Integración**: Scripts para conectar módulos
+- **Automatización**: Flujos de trabajo del pipeline
+
+## 🚀 Instalación y Configuración
+
+### Prerrequisitos
+- Node.js (v18+)
+- Python (v3.8+)
+- Cuenta de Twitter Developer
+- Proyecto Supabase
+- Cuenta de Azure AI
+
+### 1. Clonar el Repositorio
 ```bash
 git clone <url-del-repositorio>
-cd orchestration-service
+cd ETL_pipeline_vinotinto-sentiment
 ```
 
-2. Instala las dependencias:
-```bash
-npm install
-```
+### 2. Configurar Variables de Entorno
 
-3. Configura las variables de entorno:
+#### Extraction Module
 ```bash
+cd extraction
 cp env.example .env
 ```
 
-4. Completa los valores en el archivo `.env`:
-   - `SUPABASE_URL`: URL de tu proyecto Supabase
-   - `SUPABASE_API_KEY`: Clave API de Supabase
-   - `SUPABASE_TABLE`: Nombre de la tabla para almacenar datos
+Editar `extraction/.env`:
+```env
+TWITTER_BEARER_TOKEN=your_twitter_bearer_token
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-## Uso
-
-### Desarrollo
+#### Transformation Module
 ```bash
-# Iniciar el servidor de desarrollo (frontend)
-npm run dev
-
-# Iniciar el servidor backend
-npm run start:backend
+cd transformation
+cp env.example .env
 ```
 
-### Producción
+Editar `transformation/.env`:
+```env
+AZURE_OPENAI_ENDPOINT=your_azure_endpoint
+AZURE_OPENAI_API_KEY=your_azure_api_key
+AZURE_OPENAI_DEPLOYMENT_NAME=your_deployment_name
+```
+
+#### Orchestration Module
 ```bash
-# Construir la aplicación
-npm run build
-
-# Iniciar en modo preview
-npm run preview
+cd orchestration
+cp env.example .env
 ```
 
-## Scripts Disponibles
-
-- `npm run dev`: Inicia el servidor de desarrollo Vite
-- `npm run build`: Construye la aplicación para producción
-- `npm run lint`: Ejecuta ESLint para verificar el código
-- `npm run preview`: Inicia el servidor de preview
-- `npm run start:backend`: Inicia el servidor backend Express
-
-## Estructura del Proyecto
-
-```
-orchestration-service/
-├── src/
-│   ├── components/     # Componentes React
-│   ├── App.jsx        # Componente principal
-│   └── main.jsx       # Punto de entrada
-├── public/            # Archivos estáticos
-├── server.js          # Servidor Express
-├── package.json       # Dependencias y scripts
-└── README.md          # Este archivo
+Editar `orchestration/.env`:
+```env
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_API_KEY=your_supabase_api_key
+SUPABASE_TABLE=tweets_nosql
 ```
 
-## Integración con el Pipeline ETL
+### 3. Instalar Dependencias
 
-Este módulo se integra con:
-- **Extraction Module**: Para monitorear la extracción de tweets
-- **Load Module**: Para visualizar el estado de carga de datos
-- **Supabase**: Para almacenar y consultar métricas
+#### Extraction
+```bash
+cd extraction
+npm install
+```
 
-## Contribución
+#### Transformation
+```bash
+cd transformation
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+#### Orchestration
+```bash
+cd orchestration
+npm install
+```
+
+## 🔄 Flujo de Trabajo del Pipeline
+
+### 1. Extracción de Datos
+```bash
+# Desde la raíz del proyecto
+npm run extract
+
+# O directamente
+cd extraction
+node src/core/main.js
+```
+
+**Proceso**:
+- Conecta con Twitter API v2
+- Extrae tweets de cuentas específicas
+- Aplica filtros de contenido y fecha
+- Almacena en Supabase
+- Exporta a CSV
+
+### 2. Análisis de Sentimientos
+```bash
+cd transformation
+azd auth login
+python src/setup_azure.py
+python src/chat_app.py --input ../extraction/output/tweets.csv --output results.json
+```
+
+**Proceso**:
+- Lee tweets desde CSV
+- Analiza sentimientos con Azure AI
+- Genera resultados estructurados
+- Exporta análisis en JSON
+
+### 3. Monitoreo y Visualización
+```bash
+cd orchestration
+npm run dev          # Frontend React
+npm run start:backend # Backend Express
+```
+
+**Funcionalidades**:
+- Dashboard en tiempo real
+- Métricas del pipeline
+- Logs de ejecución
+- Configuración de Supabase
+
+## 📊 Configuración de Base de Datos
+
+### Tabla Supabase
+```sql
+CREATE TABLE tweets_nosql (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tweet_data JSONB NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  username TEXT NOT NULL
+);
+```
+
+## 🛠️ Scripts de Utilidad
+
+### Validación de Entorno
+```bash
+node scripts/validate-env.js
+```
+
+### Integración de Módulos
+```bash
+node scripts/integrate-extraction.js
+```
+
+## 📈 Monitoreo y Métricas
+
+El dashboard de orquestación proporciona:
+- **Estado del Pipeline**: Visualización en tiempo real
+- **Logs de Ejecución**: Historial de operaciones
+- **Métricas de Rendimiento**: Tiempos de procesamiento
+- **Configuración de Supabase**: Gestión de conexiones
+
+## 🔧 Desarrollo
+
+### Estructura de Desarrollo
+```
+├── extraction/          # Módulo independiente
+├── transformation/      # Módulo independiente  
+├── orchestration/       # Módulo independiente
+└── scripts/            # Scripts de integración
+```
+
+### Patrones de Diseño
+- **Modularidad**: Cada módulo es independiente
+- **Configuración**: Variables de entorno por módulo
+- **Integración**: Scripts para conectar módulos
+- **Monitoreo**: Dashboard centralizado
+
+## 🚨 Troubleshooting
+
+### Problemas Comunes
+
+1. **Error de Twitter API**
+   - Verificar `TWITTER_BEARER_TOKEN`
+   - Comprobar límites de rate limiting
+
+2. **Error de Azure AI**
+   - Verificar credenciales de Azure
+   - Comprobar deployment activo
+
+3. **Error de Supabase**
+   - Verificar URL y API key
+   - Comprobar estructura de tabla
+
+### Logs y Debugging
+- Los logs se muestran en el dashboard de orquestación
+- Cada módulo tiene su propio sistema de logging
+- Usar `scripts/validate-env.js` para verificar configuración
+
+## 📝 Contribución
 
 1. Fork el repositorio
 2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
@@ -97,6 +248,13 @@ Este módulo se integra con:
 4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Crea un Pull Request
 
-## Licencia
+## 📄 Licencia
 
-Este proyecto está bajo la misma licencia que el proyecto principal ETL Pipeline Vinotinto Sentiment.
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 🤝 Soporte
+
+Para soporte técnico o preguntas sobre el pipeline ETL:
+- Revisar la documentación de cada módulo
+- Verificar logs en el dashboard de orquestación
+- Usar scripts de validación para diagnóstico
